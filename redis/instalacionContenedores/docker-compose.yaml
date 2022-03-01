@@ -25,3 +25,21 @@ services:
             - /home/ubuntu/environment/curso/redis/instalacionContenedores/sentinel.conf:/redis/sentinel.conf
         ports:
             - 26379:6379 
+
+    redis-sentinel-2:
+        container_name: sentinel2
+        image: redis:4.0.10-alpine
+        command: redis-server /redis/sentinel.conf --sentinel
+        volumes:
+            - /home/ubuntu/environment/curso/redis/instalacionContenedores/sentinel.conf:/redis/sentinel.conf
+        ports:
+            - 26380:6379 
+
+    redis-sentinel-3:
+        container_name: sentinel3
+        image: redis:4.0.10-alpine
+        command: redis-server /redis/sentinel.conf --sentinel
+        volumes:
+            - /home/ubuntu/environment/curso/redis/instalacionContenedores/sentinel.conf:/redis/sentinel.conf
+        ports:
+            - 26381:6379 
