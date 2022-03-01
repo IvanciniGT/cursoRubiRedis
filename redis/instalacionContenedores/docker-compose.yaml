@@ -4,6 +4,8 @@ services:
     redis-maestro:              # Este es un fqdn para acceder al contenedor desde otros contenedores de la misma red
         container_name: maestro # Es el nombre del contenedor... Util para hacer operaciones con el comando docker
         image: redis:4.0.10-alpine
+        #restart: always
+        restart: unless-stopped
         #command: redis-server /redis/maestro.conf
         ports:
             - 6379:6379 
@@ -12,6 +14,7 @@ services:
         container_name: esclavo
         image: redis:4.0.10-alpine
         command: redis-server --slaveof redis-maestro 6379
+        restart: unless-stopped
         #command: redis-server /redis/esclavo.conf --slaveof redis-maestro 6379
                  # docker container create --name maestro -p 0.0.0.0:6379:6379 redis:4.0.10-alpine COMANDO_INICIO
         ports:
@@ -20,6 +23,7 @@ services:
     redis-sentinel-1:
         container_name: sentinel1
         image: redis:4.0.10-alpine
+        restart: unless-stopped
         command: redis-server /redis/sentinel.conf --sentinel
         volumes:
             - /home/ubuntu/environment/curso/redis/instalacionContenedores/sentinel.conf:/redis/sentinel.conf
@@ -29,6 +33,7 @@ services:
     redis-sentinel-2:
         container_name: sentinel2
         image: redis:4.0.10-alpine
+        restart: unless-stopped
         command: redis-server /redis/sentinel.conf --sentinel
         volumes:
             - /home/ubuntu/environment/curso/redis/instalacionContenedores/sentinel.conf:/redis/sentinel.conf
@@ -39,6 +44,7 @@ services:
         container_name: sentinel3
         image: redis:4.0.10-alpine
         command: redis-server /redis/sentinel.conf --sentinel
+        restart: unless-stopped
         volumes:
             - /home/ubuntu/environment/curso/redis/instalacionContenedores/sentinel.conf:/redis/sentinel.conf
         ports:

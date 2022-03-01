@@ -14,3 +14,22 @@ Redis:
     Maquina3
         Nodo1-Redis Esclavo2
             Dato1
+
+
+----
+Ivan                        Maestro | Centinela 1        172.31.12.111        
+Victor                      Esclavo | Centinela 2
+Juanjo                      Centinela 3
+---
+David                                                   172.31.14.177
+JuanAntonio
+Ruben
+---
+Concha                                                  172.31.13.236
+Vero
+Urko
+---
+Ivan/Profe                                              172.31.9.115
+Javier
+Jorge
+---
