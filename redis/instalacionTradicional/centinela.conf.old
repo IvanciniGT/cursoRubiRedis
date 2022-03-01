@@ -67,8 +67,7 @@
 # IF YOU ARE SURE YOU WANT YOUR INSTANCE TO LISTEN TO ALL THE INTERFACES
 # JUST COMMENT THE FOLLOWING LINE.
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# bind 127.0.0.1
-bind 172.31.9.115
+bind 127.0.0.1
 
 # Protected mode is a layer of security protection, in order to avoid that
 # Redis instances left open on the internet are accessed and exploited.
@@ -91,7 +90,7 @@ protected-mode yes
 
 # Accept connections on the specified port, default is 6379 (IANA #815344).
 # If port 0 is specified Redis will not listen on a TCP socket.
-port 6379
+port 26379
 
 # TCP listen() backlog.
 #
@@ -157,7 +156,7 @@ supervised no
 #
 # Creating a pid file is best effort: if Redis is not able to create it
 # nothing bad happens, the server will start and run normally.
-pidfile /var/run/redis_6379.pid
+pidfile /var/run/redis_26379.pid
 
 # Specify the server verbosity level.
 # This can be one of:
@@ -170,7 +169,7 @@ loglevel notice
 # Specify the log file name. Also the empty string can be used to force
 # Redis to log on the standard output. Note that if you use standard
 # output for logging but daemonize, logs will be sent to /dev/null
-logfile /var/log/redis_maestro.log
+logfile /var/log/redis_centinela.log
 
 # To enable logging to the system logger, just set 'syslog-enabled' to yes,
 # and optionally update the other syslog parameters to suit your needs.
@@ -262,7 +261,7 @@ dbfilename dump.rdb
 # The Append Only File will also be created inside this directory.
 #
 # Note that you must specify a directory here, not a file name.
-dir /var/lib/redis/maestro
+dir /tmp/redis/centinela
 
 ################################# REPLICATION #################################
 
@@ -558,7 +557,7 @@ slave-priority 100
 # limit for maxmemory so that there is some free RAM on the system for slave
 # output buffers (but this is not needed if the policy is 'noeviction').
 #
-maxmemory 2000000
+# maxmemory <bytes>
 
 # MAXMEMORY POLICY: how Redis will select what to remove when maxmemory
 # is reached. You can select among five behaviors:
@@ -589,7 +588,7 @@ maxmemory 2000000
 #
 # The default is:
 #
-maxmemory-policy noeviction
+# maxmemory-policy noeviction
 
 # LRU, LFU and minimal TTL algorithms are not precise algorithms but approximated
 # algorithms (in order to save memory), so you can tune it for speed or
@@ -671,7 +670,7 @@ slave-lazy-flush no
 #
 # Please check http://redis.io/topics/persistence for more information.
 
-appendonly yes
+appendonly no
 
 # The name of the append only file (default: "appendonly.aof")
 

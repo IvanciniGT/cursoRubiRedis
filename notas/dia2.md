@@ -29,7 +29,27 @@ Concha                                                  172.31.13.236
 Vero
 Urko
 ---
-Ivan/Profe                                              172.31.9.115
-Javier
+Ivan/Profe                                              172.31.9.115 √
+Javier                                                               √
 Jorge
 ---
+
+
+Cuando arrancamos un redis distribuido nos está dando un problema y es que no deja a nadie conectarse con el maestro
+ni con un esclavo.... dice que está en modo protegido.
+
+Soluciones:
+- desactivar el modo protegido.
+    protected-mode no
+                                    COMO LO VEIS?  Desarrollo guay! ... Para prod? Lo dejo al aire
+- bind 127.0.0.1 172.31.9.115
+    Aquí ya no entra el modo protegido
+                                    COMO LO VEIS?  Estoy igual!!!
+√ Poner contraseña para poder acceder 
+    -   En maestro: Establezco contraseña
+            Maestro, Esclavo: requirepass CONTRASEÑA_DE_MAXIMA_SEGURIDAD
+    -   En esclavo: Establezco contraseña y configuro contraseña del maestro
+            Esclavo:          masterauth  CONTRASEÑA_DE_MAXIMA_SEGURIDAD_DEL_MAESTRO
+    -   Sentinel: Configuro contraseñas de los redis de datos
+            Sentinel:         sentinel auth-password GRUPO_REDIS  CONTRASEÑA_DE_MAXIMA_SEGURIDAD_DEL_MAESTRO
+    -   Clientes: Uso las contraseñas para conectarse

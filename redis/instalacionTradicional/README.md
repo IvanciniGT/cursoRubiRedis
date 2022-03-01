@@ -40,6 +40,7 @@
     del fichero del servicio. El fichero del servicio me sale al hacer
     el systemctl status redis_XXXXXX
     
+2º Configurar redis
     Tenesitamos editar el fichero de configuración:
     $ sudo vim /etc/redis/maestro.conf
     
@@ -49,6 +50,8 @@
         
         PROPIEDAD           VALOR
         # Para todos:
+        appendonly          yes
+                            Tras un reinicio, mantener los datos que hubiera
         bind                O la quito y que esuche en todas las interfaces
                             O le pongo la IP de mi red donde están conectados el resto de redis y apaches
         
@@ -68,4 +71,24 @@
         replicaOf
     
     $ sudo cp ~/environment/curso/redis/instalacionTradicional/maestro.conf /etc/redis/maestro.conf                                                                          
-2º Configurar redis
+
+3º Arrancamos redis:
+    $ sudo systemctl start redis_maestro.service
+    $ sudo systemctl enable redis_maestro.service
+4º Comprobación:
+    $ sudo systemctl status redis_maestro.service
+        POCO CONVINCENTE.... 
+    Mirar el puerto
+    $ netstat -lnt 
+    $ ps -eaf | grep redis-server
+    
+    $ redis-cli
+        info
+            A revisar:
+                1º fichero cofiguración
+                2º versión redis
+                3º Memoria
+                41    # Replication
+                        role:master
+                        connected_slaves:0
+        exit
