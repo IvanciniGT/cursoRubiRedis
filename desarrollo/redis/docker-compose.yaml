@@ -1,0 +1,10 @@
+# Ejecutar con: 
+#  $ docker-compose up -d
+version: "3.5"
+
+services:
+    redis-maestro:              
+        container_name: redis-desarrollo
+        image: redis:4.0.10-alpine
+        ports:
+            - 6380:6379 

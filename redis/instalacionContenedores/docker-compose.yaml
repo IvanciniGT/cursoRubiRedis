@@ -49,3 +49,5 @@ services:
             - /home/ubuntu/environment/curso/redis/instalacionContenedores/sentinel.conf:/redis/sentinel.conf
         ports:
             - 26381:6379 
+# docker inspect NOMBRE_CONTENEDOR | grep IPA < IP de los sentinel
+# Sentinel: localhost:26379,localhost:26380,localhost:26381

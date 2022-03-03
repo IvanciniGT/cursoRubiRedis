@@ -1,0 +1,11 @@
+[Unit]
+Description=Redis Maestro
+
+[Service]
+ExecStart=/usr/local/bin/redis-server /etc/redis/maestro.conf
+ExecStop=/usr/local/bin/redis-cli -h 172.31.9.115 -p 6379 shutdown
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
