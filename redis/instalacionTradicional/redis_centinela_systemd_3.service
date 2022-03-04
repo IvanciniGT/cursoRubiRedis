@@ -1,0 +1,10 @@
+[Unit]
+Description=Redis Centinela3
+
+[Service]
+ExecStart=/usr/local/bin/redis-server /etc/redis/centinela.3.conf --sentinel
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

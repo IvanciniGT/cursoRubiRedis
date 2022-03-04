@@ -29,7 +29,7 @@ Concha                                                  172.31.13.236
 Vero
 Urko
 ---
-Ivan/Profe                                              172.31.9.115 √
+Ivan/Profe                                              172.31.9.115 √ Beber martini!!!!
 Javier                                                               √
 Jorge
 ---
@@ -53,3 +53,4 @@ Soluciones:
     -   Sentinel: Configuro contraseñas de los redis de datos
             Sentinel:         sentinel auth-password GRUPO_REDIS  CONTRASEÑA_DE_MAXIMA_SEGURIDAD_DEL_MAESTRO
     -   Clientes: Uso las contraseñas para conectarse
+    -   

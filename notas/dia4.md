@@ -79,6 +79,125 @@ REDIS:
     Esto es una app web:
     Necesito un servidor WEB.
         Rails tiene el suyo... me vale para desarrollo. NO PARA PROD
-
+        $ rails s
 http://servidor:Puerto/comer/COMIDA
+
 curl http://localhost:8080/comer/platano
+curl http://localhost:8080/beber/riojita
+
+----------------------------------------
+Queue: Cola
+
+Estructura de almacenamiento de datos:
+    Cola - Queue
+        Sigue un modelo FIFO
+        First In > First Out
+            El primero que pongo, es el primero que sale
+            El primer trabajo que encolo, es el primero que se ejecuta
+            Me garantiza el orden de ejecución de las tareas apuntadas en redis.
+            
+    Pila - Stack
+        Sigue un modelo LIFO
+            Last In > First Out
+    Arbol - Tree
+    HashMap
+    Array
+    
+----------------------------------------    
+
+Cola: 
+    Emails- Pendientes
+    Emails-Procesandose por el worker 1
+    Emails-Procesandose por el worker 2
+        Hay que mandar un email a Lucas... para que deje los martinis y come más pimientos!
+
+Worker 1 Leyendo de la cola Emails
+    Voy a mandarle el email a Lucas....
+Worker 2 Leyendo de la cola Emails
+
+I. Me interesa sacar de redis (cola) la tarea cuando la toma un worker? 
+    Resuelve el problema de que 2 workers no ejeuten la misma tarea? SI
+    Pero... tengo otro? Que pasa si el worker se cae a medias.... RUINA !!!!!!!
+        El pobre lucas sigue bebiendo como un cosaco.!!!!
+II: la muevo a otroa cola, asociada al worker 1... en proceso (started)
+    Resuelve el problema de que el 2 no la pille? SI
+        El 2 solo mira la cola grande... Pendientes!
+    Resuleve el problema que tengo si se cae Worker1?
+        En parte... El worker2 no es capaz de leer la cola del worker1
+        Pero al menos el dato no lo he perdido
+    Ahi entra la magia de resque!!!! Resque vien al resquiate!!!
+        Si heartbeat (worker1).... RIP !!!!!!
+        Le paso lo que tenia comenzado y lo pongo de nuevo en pendiente
+-----
+
+# ENTORNO DE PRODUCCION
+                                HOST 0
+            ------------------ Apache Frontal ---------------------------
+            |                                   |                       |
+            Host A                              Host B                  Host C
+            |- Apache Backend                   |- Apache Backend       |- Centinela 3
+            |   Passenger                       |   Passenger
+            |       App1                        |       App1
+            |       App2                        |       App2
+            |- Redis maestro*-------------------|- Redis esclavo (pasivo-replicación)
+            |- Centinela 1                      |- Centinela 2
+            |- Workers... 13                    |- Workers....13
+            |    Son procesos                   |    Son procesos 
+            |    independientes a nivel de SO   |    independientes a nivel de SO
+            |       5 batch                     |       5 batch
+            |       8 colas                     |       8 colas
+            |            COMER                  |            COMER
+
+Llegan las peticiones al host B? 
+    Donde se guardan?  En la cola PERTINENTE de REDIS
+    Donde está REDIS?  En ambos... En 2... Quién manda? HOST A
+    Quien las procesa? NPI
+        26 procesos paralelos (2x13) en 2 hosts... todos tirando al mismo maestro
+            
+Se cae el Host B. Qué pasa?
+    El Redis del HOST A se queda de maestro
+    - Quién procesa.... solo tengo los ejecutores (workers) A
+    - Qué pasa con lo que estaban haciendo los del B?
+        - Se pasan a la cola de pendientes... quién gestiona esa cola? Redis HOST A
+    - Todo guay 1
+    
+    
+    
+## Quién monitoriza esos procesos? 
+systemctl
+
+# Dashboard de resque
+
+echo http://$(curl ifconfig.me):8080/jobs
+
+
+curl http://localhost:8080/comer/pimiento
+curl http://localhost:8080/comer/pepino
+curl http://localhost:8080/comer/tomate
+curl http://localhost:8080/comer/salmon
+curl http://localhost:8080/comer/zanahoria
+curl http://localhost:8080/beber/rioja
+curl http://localhost:8080/beber/martini
+curl http://localhost:8080/beber/ronmiel
+curl http://localhost:8080/beber/whisky
+curl http://localhost:8080/comer/pimiento
+curl http://localhost:8080/comer/pepino
+curl http://localhost:8080/comer/tomate
+curl http://localhost:8080/comer/salmon
+curl http://localhost:8080/comer/zanahoria
+curl http://localhost:8080/beber/rioja
+curl http://localhost:8080/beber/martini
+curl http://localhost:8080/beber/ronmiel
+curl http://localhost:8080/beber/whisky
+
+
+
+
+
+3 maquinas:
+    Apache - configurado passenger app demo
+           - configurar app nueva.  
+    Centinela redis
+    
+Redis maestro
+Redis Esclavo
